@@ -15,15 +15,17 @@ function cat(path) {
 
 async function webCat(url) {
     try {
-      let resp = await axios.get(url);
-      console.log(resp.data);
+      // try getting data from url
+      let res = await axios.get(url);
+      console.log(res.data);
+      // if error thrown, send a message 
     } catch (err) {
       console.error(`URL DNE: ${err}`);
       process.exit(1);
     }
   }
 
-  let path = process.argv[2];
+  let path = process.argv[2]; 
 
   if (path.slice(0, 4) === 'http') {
     webCat(path);

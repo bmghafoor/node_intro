@@ -8,6 +8,7 @@ function cat(path) {
       console.error(`PATH DNE${err}`);
       process.exit(1);
     } else {
+      //run the writeTo function that will either log the path or output the data depending on if --out is given
       writeTo(data, out);
     }
   });
@@ -15,8 +16,9 @@ function cat(path) {
 
 async function webCat(url) {
     try {
-      let resp = await axios.get(url);
-      writeTo(resp,out);
+      let res = await axios.get(url);
+      // run the writeTo function that will either log the path or output the data depending on if --out is given
+      writeTo(res,out);
     } catch (err) {
       console.error(`URL DNE: ${err}`);
       process.exit(1);
@@ -25,27 +27,33 @@ async function webCat(url) {
 
 
 function writeTo(path, out) {
+  // output to a file instead of logging it in console
   if (out){
     fs.writeFile(out, path, 'utf8', function(err){
+      // if error is thrown, handle it
       if (err){
-        console.log("ERROR")
+        console.log("ERROR Path DNE")
         process.exit(1)
       }
     })
   }
+  // if no output command is given then just console.log the path
   else {
     console.log(path)
   }
   
 }
 
+// initialize variables
 let path;
 let out;
 
+// if --out is given, then the writeTo function will output data
 if (process.argv[2] === '--out') {
   out = process.argv[3];
   path = process.argv[4];
 } else {
+  // console.log the data
   path = process.argv[2];
 }
 
